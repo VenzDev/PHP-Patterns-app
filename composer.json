@@ -1,0 +1,19 @@
+{
+    "name": "venz_dev/projekt_wzorce",
+    "description": "description",
+    "authors": [
+        {
+            "name": "VenzDev",
+            "email": "kamil.bechta1@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {
+        "ext-mysqli": "*",
+        "vlucas/phpdotenv": "^5.3"
+    }
+}
