@@ -14,7 +14,7 @@ class Controller extends AbstractController
 {
     public function helloAction()
     {
-        Response::json('success','','success', 201);
+        Response::json('success', '', 'success', 201);
     }
 
     public function buyProductAction()
@@ -37,7 +37,8 @@ class Controller extends AbstractController
 
     public function loginAction()
     {
-        $data = Person::login('email', 'password');
+        (array)$data = json_decode(file_get_contents("php://input"), true);
+        $data = Person::login($data['email'], $data['password']);
 
         if (empty($data)) {
             Response::json('error', '', 'Wrong Credentials', 422);
