@@ -12,6 +12,11 @@ use Exception;
 
 class Controller extends AbstractController
 {
+    public function helloAction()
+    {
+        Response::json('success','','success', 201);
+    }
+
     public function buyProductAction()
     {
         try {
