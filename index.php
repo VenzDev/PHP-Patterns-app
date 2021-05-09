@@ -6,8 +6,8 @@ use Dotenv\Dotenv;
 
 require_once realpath("vendor/autoload.php");
 
-$dotenv = Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+//$dotenv = Dotenv::createImmutable(__DIR__);
+//$dotenv->load();
 
 $controllersMap = [Controller::class];
 Kernel::runControllers($controllersMap);
