@@ -10,7 +10,7 @@ use Exception;
 
 class DBConnection
 {
-    private static $instance = null;
+    private static ?DBConnection $instance = null;
     public mysqli $mysqli;
 
     protected function __construct()
@@ -45,6 +45,12 @@ class DBConnection
     public function runSql($sql)
     {
         return $this->mysqli->query($sql);
+    }
+
+    public function runSqlAndGetRow($sql)
+    {
+         $this->mysqli->query($sql);
+         return $this->runSql("SELECT LAST_INSERT_ID()");
     }
 
 }

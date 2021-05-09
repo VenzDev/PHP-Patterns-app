@@ -24,10 +24,16 @@ class QueryBuilder
         $this->query = new stdClass();
     }
 
-    public function select(string $table, array $fields): QueryBuilder
+    public function select(string $table, array $fields = null): QueryBuilder
     {
         $this->reset();
-        $this->query->base = "SELECT ".implode(',', $fields)." FROM ".$table;
+
+        if ($fields) {
+            $this->query->base = "SELECT ".implode(',', $fields)." FROM ".$table;
+        } else {
+            $this->query->base = "SELECT * FROM $table";
+        }
+
         $this->query->type = 'select';
 
         return $this;
@@ -75,6 +81,7 @@ class QueryBuilder
         }
         $sql .= ";";
 
+
         $sqlObject = $this->db->runSql($sql);
 
         while ($row = $sqlObject->fetch_array(MYSQLI_ASSOC)) {
@@ -84,4 +91,25 @@ class QueryBuilder
         return $rows;
     }
 
+    public function insert(string $table, array $fields)
+    {
+        $this->reset();
+
+        $sql = "INSERT INTO $table (";
+        foreach ($fields as $key => $field){
+            $sql.= " $key,";
+        }
+        $sql = substr($sql, 0, -1);
+        $sql .= ') VALUES (';
+
+        foreach ($fields as $key => $field){
+            $sql.= " '$field',";
+        }
+
+        $sql = substr($sql, 0, -1);
+        $sql .=');';
+
+        $sqlObject = $this->db->runSqlAndGetRow($sql);
+        return $sqlObject->fetch_array(MYSQLI_ASSOC);
+    }
 }
