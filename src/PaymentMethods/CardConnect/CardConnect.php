@@ -15,11 +15,13 @@ use Exception;
 class CardConnect implements PayInterface, TaxInterface
 {
     private array $data;
+    private CardConnectService $service;
     private float $tax = 0.16;
 
     public function __construct(array $data)
     {
-        $this->data = $data;
+        $this->data    = $data;
+        $this->service = new CardConnectService();
     }
 
     public function calculateTax(string $amount): float
@@ -30,13 +32,15 @@ class CardConnect implements PayInterface, TaxInterface
     public function pay(string $productId): bool
     {
         try {
-            //TODO fake
-            $accountId = $this->data['account'];
-
-
+            $result = $this->service->capture($this->data);
+            if ($result->status != "A") {
+                throw new Exception('Invalid Credentials');
+            }
             $payment = new Payment();
             $payment->setType($this->data['method']);
-
+            $payment->setTax($this->calculateTax($this->data['amount']));
+            $payment->setProductId($productId);
+            $payment->save();
         } catch (Exception $e) {
             $this->logToFile($e->getMessage());
         }
