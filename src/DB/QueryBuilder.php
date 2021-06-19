@@ -65,6 +65,20 @@ class QueryBuilder
         return $this;
     }
 
+    public function update(string $table, array $fields): QueryBuilder
+    {
+        $this->reset();
+
+        $this->query->type = 'update';
+
+        $sql = "UPDATE $table SET ";
+        foreach ($fields as $key => $value){
+            $sql .= "$key = '$value',";
+        }
+        $this->query->base = substr($sql,0 ,-1).' ';
+
+        return $this;
+    }
 
     public function get(): array
     {
@@ -98,6 +112,22 @@ class QueryBuilder
             return $result[0];
         }
         return null;
+    }
+
+    public function exec()
+    {
+        $sql = $this->query->base;
+
+        if (!empty($this->query->join)) {
+            $sql .= implode(', ', $this->query->join);
+        }
+
+        if (!empty($this->query->where)) {
+            $sql .= " WHERE ".implode(' AND ', $this->query->where);
+        }
+        $sql .= ";";
+
+        $this->db->runSql($sql);
     }
 
     public function insert(string $table, array $fields)

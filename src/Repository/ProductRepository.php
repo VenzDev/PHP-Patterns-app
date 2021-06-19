@@ -12,6 +12,11 @@ class ProductRepository
         return Product::query()->select('Products')->where('userId',$id)->get();
     }
 
+    public function getProductById($id)
+    {
+        return Product::query()->select('Products')->where('id',$id)->first();
+    }
+
     public function createProduct($data, $userId)
     {
         $product  = new Product();

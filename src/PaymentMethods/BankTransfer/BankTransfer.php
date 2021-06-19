@@ -6,6 +6,7 @@
 namespace App\PaymentMethods\BankTransfer;
 
 use App\Models\Payment;
+use App\Models\Product;
 use App\PaymentMethods\PayInterface;
 use App\PaymentMethods\TaxInterface;
 use Exception;
@@ -24,18 +25,26 @@ class BankTransfer implements PayInterface, TaxInterface
         return (float)$amount * $this->tax;
     }
 
+    public function transferMoney(): bool
+    {
+        //TODO fake transfer
+        return true;
+    }
+
     public function pay(string $productId): bool
     {
         try {
-            //TODO fake payment by bankTransfer
-            $accountId = $this->data['accountId'];
+            $this->transferMoney();
 
             $payment = new Payment();
             $payment->setType($this->data['method']);
+            $payment->setAmount($this->data['amount']);
             $payment->setTax($this->calculateTax($this->data['amount']));
-            $payment->setProductId($productId);
-            $payment->save();
+            $res = $payment->save();
 
+            if(!$res) {
+                throw new Exception('Cannot create payment');
+            }
             return true;
         } catch (Exception $e) {
             $this->logToFile($e->getMessage());

@@ -16,6 +16,7 @@
         "ext-mysqli": "*",
         "vlucas/phpdotenv": "^5.3",
         "tecnickcom/tcpdf": "^6.4",
-      "ext-curl": "*"
+      "ext-curl": "*",
+        "mindplay/annotations": "^1.3"
     }
 }

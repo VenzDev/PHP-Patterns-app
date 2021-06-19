@@ -39,10 +39,4 @@ class Payment extends BaseModel
         return $this->amount;
     }
 
-    public function setProductId(int $id)
-    {
-        $this->productId = $id;
-    }
-
-
 }

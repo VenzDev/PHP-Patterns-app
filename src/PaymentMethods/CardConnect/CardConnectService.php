@@ -2,15 +2,17 @@
 
 namespace App\PaymentMethods\CardConnect;
 
-class CardConnectService {
+class CardConnectService
+{
     private string $merchId;
     private string $apiKey;
+    private string $site;
 
     public function __construct()
     {
-        $this->apiKey = 'apiKey';
-        $this->site = 'site';
-        $this->merchId = 'merchId';
+        $this->apiKey  = $_ENV['CARDCONNECT_APIKEY'];
+        $this->site    = $_ENV['CARDCONNECT_SITE'];
+        $this->merchId = $_ENV['CARDCONNECT_MERCHID'];
     }
 
     public function capture($data)
@@ -19,7 +21,7 @@ class CardConnectService {
         return $this->request('auth', 'POST', $data);
     }
 
-    private function request($method, $request,$data = null)
+    private function request($method, $request, $data = null)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://$this->site.cardconnect.com/cardconnect/rest/$method");
@@ -36,10 +38,10 @@ class CardConnectService {
         curl_setopt(
                 $ch,
                 CURLOPT_HTTPHEADER,
-                array(
+                [
                         "Authorization: Basic $this->apiKey",
-                        "Content-Type: application/json"
-                )
+                        "Content-Type: application/json",
+                ]
         );
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

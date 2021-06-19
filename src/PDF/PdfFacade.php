@@ -13,11 +13,13 @@ class PdfFacade
         $this->html = new HtmlGenerator();
     }
 
-    public function downloadPdf($data)
+    public function downloadPdf($product, $payment)
     {
         $this->pdf->preparePdfBase();
-        $html = $this->html->ProductsToHtml();
-        $this->pdf->prepareHtml($html);
+        $htmlProduct = $this->html->productToHTML($product);
+        $htmlPayment = $this->html->paymentToHTML($payment);
+        $this->pdf->prepareProduct($htmlProduct);
+        $this->pdf->preparePayment($htmlPayment);
         $this->pdf->download();
     }
 }
