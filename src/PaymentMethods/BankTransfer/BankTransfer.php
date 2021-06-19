@@ -12,46 +12,39 @@ use Exception;
 
 class BankTransfer implements PayInterface, TaxInterface
 {
-    private array $product;
-    private array $payment;
-    private float $tax = 0.18;
+    private array $data;
+    private float $tax = 0.16;
 
-    public function __construct($data)
+    public function __construct(array $data)
     {
-        $this->product = $data['product'];
-        $this->payment = $data['payMethod'];
+        $this->data = $data;
     }
-
     public function calculateTax(string $amount): float
     {
         return (float)$amount * $this->tax;
     }
 
-    public function pay(string $productId, string $userId): string
+    public function pay(string $productId): bool
     {
         try {
-            $subtotal = $this->product['amount'] * $this->product['pricePerOne'];
-            $tax      = $this->calculateTax($subtotal);
+            //TODO fake payment by bankTransfer
+            $accountId = $this->data['accountId'];
 
+            $payment = new Payment();
+            $payment->setType($this->data['method']);
+            $payment->setTax($this->calculateTax($this->data['amount']));
+            $payment->setProductId($productId);
+            $payment->save();
 
-            Payment::create(
-                [
-                    'tax'       => $tax,
-                    'total'     => $subtotal + $tax,
-                    'type'      => 'BankTransfer',
-                    'productId' => $productId,
-                    'userId'    => $userId
-                ],
-            );
-
-            return 'success';
+            return true;
         } catch (Exception $e) {
             $this->logToFile($e->getMessage());
+            return false;
         }
     }
 
     public function logToFile(string $message)
     {
-        file_put_contents('./BankTransfer.txt', $message);
+        file_put_contents('./logs/BankTransfer.txt', $message);
     }
 }

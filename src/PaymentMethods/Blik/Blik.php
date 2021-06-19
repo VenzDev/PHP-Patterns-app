@@ -21,8 +21,6 @@ class Blik  implements PayInterface, TaxInterface
 
     public function __construct($data)
     {
-        $this->product = $data['product'];
-        $this->payment = $data['payMethod'];
     }
 
     public function calculateTax(string $amount): float
@@ -30,24 +28,10 @@ class Blik  implements PayInterface, TaxInterface
         return (float)$amount * $this->tax + 1.50;
     }
 
-    public function pay(string $productId, string $userId): string
+    public function pay(string $productId): bool
     {
         try {
-            $subtotal = $this->product['amount'] * $this->product['pricePerOne'];
-            $tax      = $this->calculateTax($subtotal);
-
-
-            Payment::create(
-                [
-                    'tax'       => $tax,
-                    'total'     => $subtotal + $tax,
-                    'type'      => 'Blik',
-                    'productId' => $productId,
-                    'userId'    => $userId
-                ],
-            );
-
-            return 'success';
+            return true;
         } catch (Exception $e) {
             $this->logToFile($e->getMessage());
         }

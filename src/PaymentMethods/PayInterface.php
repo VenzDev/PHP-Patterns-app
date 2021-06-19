@@ -7,6 +7,6 @@ namespace App\PaymentMethods;
 
 interface PayInterface
 {
-    public function pay(string $productId, string $userId): string;
+    public function pay(string $productId): bool;
     public function logToFile(string $message);
 }

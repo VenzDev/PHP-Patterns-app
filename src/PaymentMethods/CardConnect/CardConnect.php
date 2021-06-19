@@ -14,14 +14,12 @@ use Exception;
 
 class CardConnect implements PayInterface, TaxInterface
 {
-    private array $product;
-    private array $payment;
+    private array $data;
     private float $tax = 0.16;
 
-    public function __construct($data)
+    public function __construct(array $data)
     {
-        $this->product = $data['product'];
-        $this->payment = $data['payMethod'];
+        $this->data = $data;
     }
 
     public function calculateTax(string $amount): float
@@ -29,24 +27,16 @@ class CardConnect implements PayInterface, TaxInterface
         return (float)$amount * $this->tax + 2.00;
     }
 
-    public function pay(string $productId, string $userId): string
+    public function pay(string $productId): bool
     {
         try {
-            $subtotal = $this->product['amount'] * $this->product['pricePerOne'];
-            $tax      = $this->calculateTax($subtotal);
+            //TODO fake
+            $accountId = $this->data['account'];
 
 
-            Payment::create(
-                [
-                    'tax'       => $tax,
-                    'total'     => $subtotal + $tax,
-                    'type'      => 'CardConnect',
-                    'productId' => $productId,
-                    'userId'    => $userId
-                ],
-            );
+            $payment = new Payment();
+            $payment->setType($this->data['method']);
 
-            return 'success';
         } catch (Exception $e) {
             $this->logToFile($e->getMessage());
         }

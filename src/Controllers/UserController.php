@@ -5,12 +5,13 @@ namespace App\Controllers;
 use App\Repository\UserRepository;
 use App\Request;
 use App\Response;
+use JetBrains\PhpStorm\Pure;
 
 class UserController extends AbstractController
 {
     private UserRepository $userRepository;
 
-    public function __construct(Request $request)
+    #[Pure] public function __construct(Request $request)
     {
         $this->userRepository = new UserRepository();
         parent::__construct($request);

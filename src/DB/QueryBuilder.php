@@ -112,11 +112,16 @@ class QueryBuilder
         $sql .= ') VALUES (';
 
         foreach ($fields as $key => $field){
+            if(gettype($field) == 'boolean') {
+                $field = $field ? '1' : '0';
+
+            }
             $sql.= " '$field',";
         }
 
         $sql = substr($sql, 0, -1);
         $sql .=');';
+
         $sqlObject = $this->db->runSqlAndGetRow($sql);
         return $sqlObject->fetch_array(MYSQLI_ASSOC)['LAST_INSERT_ID()'];
     }
