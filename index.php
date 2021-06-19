@@ -3,19 +3,13 @@
 use App\Controllers\Controller;
 use App\Kernel;
 use Dotenv\Dotenv;
+use App\Controllers\UserController;
+use App\Controllers\ProductController;
 
 require_once realpath("vendor/autoload.php");
 
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-$person = new \App\Models\Person();
-
-$person->setEmail('email');
-$person->setPassword('password');
-$person->setFirstName('first');
-$person->setLastName('last');
-$person->save();
-
-$controllersMap = [Controller::class];
+$controllersMap = [Controller::class, UserController::class, ProductController::class];
 Kernel::runControllers($controllersMap);

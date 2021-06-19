@@ -15,7 +15,7 @@ class Response
         self::jsonOutput(422, $data);
     }
 
-    public static function json($status, $data, $message, $code)
+    public static function json($status, $data, $message, $code = 200)
     {
         $data = [
             'status'  => $status,
@@ -30,9 +30,7 @@ class Response
     private static function jsonOutput($code, $data)
     {
         http_response_code($code);
-        echo '<pre>';
         echo json_encode($data);
-        echo '</pre>';
         exit;
     }
 

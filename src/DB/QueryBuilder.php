@@ -91,6 +91,15 @@ class QueryBuilder
         return $rows;
     }
 
+    public function first(): array|null
+    {
+        $result = $this->get();
+        if(count($result) > 0) {
+            return $result[0];
+        }
+        return null;
+    }
+
     public function insert(string $table, array $fields)
     {
         $this->reset();

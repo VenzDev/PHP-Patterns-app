@@ -35,18 +35,6 @@ class Controller extends AbstractController
         }
     }
 
-    public function loginAction()
-    {
-        (array)$data = json_decode(file_get_contents("php://input"), true);
-        $data = Person::login($data['email'], $data['password']);
-
-        if (empty($data)) {
-            Response::json('error', '', 'Wrong Credentials', 422);
-        }
-
-        Response::json('success', $data, 'Login success', 200);
-    }
-
     private function getPaymentMethod($data)
     {
         $type = $data['payMethod']['type'];

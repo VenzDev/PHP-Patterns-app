@@ -15,6 +15,11 @@ class Request
         $this->server = $server;
     }
 
+    public function json()
+    {
+        return json_decode(file_get_contents("php://input"), true);
+    }
+
     public function isPost(): bool
     {
         return $this->server['REQUEST_METHOD'] === 'POST';
