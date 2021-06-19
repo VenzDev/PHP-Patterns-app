@@ -2,32 +2,47 @@
 
 namespace App\Models;
 
-use App\Response;
-
 class Payment extends BaseModel
 {
-    private const TBL_PAYMENT = 'Payments';
-    private const ID = 'ID';
-    private const TYPE = 'type';
-    private const TAX = 'tax';
-    private const PRODUCT_ID = 'productId';
-    private const USER_ID = 'userId';
+    protected string $type;
+    protected float $tax;
+    protected float $amount;
 
-    public static function get($id = null)
+
+    public function setType(string $type)
     {
-        self::loadQueryBuilder();
-        if ($id) {
-            return self::$query->select(self::TBL_PAYMENT)->where(self::ID, $id)->get();
-        } else {
-            return self::$query->select(self::TBL_PAYMENT)->get();
-        }
+        $this->type = $type;
     }
 
-    public static function create($data)
+    public function getType(): string
     {
-        self::loadQueryBuilder();
-
-        return self::$query->insert(self::TBL_PAYMENT, $data)['LAST_INSERT_ID()'];
+        return $this->type;
     }
+
+    public function setTax(float $tax)
+    {
+        $this->tax = $tax;
+    }
+
+    public function getTax(): float
+    {
+        return $this->tax;
+    }
+
+    public function setAmount(float $amount)
+    {
+        $this->amount = $amount;
+    }
+
+    public function getAmount(): float
+    {
+        return $this->amount;
+    }
+
+    public function setProductId(int $id)
+    {
+        $this->productId = $id;
+    }
+
 
 }

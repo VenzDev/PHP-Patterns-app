@@ -49,8 +49,8 @@ class DBConnection
 
     public function runSqlAndGetRow($sql)
     {
-         $this->mysqli->query($sql);
-         return $this->runSql("SELECT LAST_INSERT_ID()");
+        $this->mysqli->query($sql);
+        return $this->runSql("SELECT LAST_INSERT_ID()");
     }
 
 }

@@ -108,8 +108,7 @@ class QueryBuilder
 
         $sql = substr($sql, 0, -1);
         $sql .=');';
-
         $sqlObject = $this->db->runSqlAndGetRow($sql);
-        return $sqlObject->fetch_array(MYSQLI_ASSOC);
+        return $sqlObject->fetch_array(MYSQLI_ASSOC)['LAST_INSERT_ID()'];
     }
 }

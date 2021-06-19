@@ -2,42 +2,84 @@
 
 namespace App\Models;
 
-use App\Response;
-
 class Person extends BaseModel
 {
-    private const TBL_PERSONS = 'Persons';
-    private const ID = 'ID';
-    private const FIRST_NAME = 'firstName';
-    private const LAST_NAME = 'lastName';
-    private const EMAIL = 'email';
-    private const PASSWORD = 'password';
+    protected string $firstName;
+    protected string $lastName;
+    protected string $email;
+    protected string $password;
 
-    public static function get($id = null)
+    private function encodePassword($password)
     {
-        self::loadQueryBuilder();
-        if ($id) {
-            return self::$query->select(self::TBL_PERSONS)->where(self::ID, $id)->get();
-        } else {
-            return self::$query->select(self::TBL_PERSONS)->get();
-        }
+        return base64_encode($password);
     }
 
-    public static function create($data)
+    private function decodePassword($password)
     {
-        self::loadQueryBuilder();
-
-        return self::$query->insert(self::TBL_PRODUCTS, $data)['LAST_INSERT_ID()'];
+        return base64_decode($password);
     }
 
-    public static function login($email, $password)
+    /**
+     * @return string
+     */
+    public function getFirstName(): string
     {
-        self::loadQueryBuilder();
+        return $this->firstName;
+    }
 
-        return self::$query
-            ->select(self::TBL_PERSONS)
-            ->where(self::EMAIL, $email)
-            ->where(self::PASSWORD, $password)
-            ->get();
+    /**
+     * @param  string  $firstName
+     */
+    public function setFirstName(string $firstName): void
+    {
+        $this->firstName = $firstName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName(): string
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @param  string  $lastName
+     */
+    public function setLastName(string $lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param  string  $email
+     */
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->decodePassword($this->password);
+    }
+
+    /**
+     * @param  string  $password
+     */
+    public function setPassword(string $password): void
+    {
+        $this->password = $this->encodePassword($password);
     }
 }

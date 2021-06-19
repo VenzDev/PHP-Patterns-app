@@ -26,7 +26,7 @@ abstract class AbstractController
         return $isActionExecuted;
     }
 
-    private function action(): string
+    private function action()
     {
         return $this->request->getParam('action');
     }
