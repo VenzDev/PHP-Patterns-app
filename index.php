@@ -9,8 +9,8 @@ use App\Controllers\PdfController;
 
 require_once realpath("vendor/autoload.php");
 
-$dotenv = Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+//$dotenv = Dotenv::createImmutable(__DIR__);
+//$dotenv->load();
 
 $controllersMap = [Controller::class, UserController::class, ProductController::class, PdfController::class];
 Kernel::runControllers($controllersMap);
