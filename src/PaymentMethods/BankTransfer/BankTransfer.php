@@ -50,10 +50,25 @@ class BankTransfer implements PayInterface, TaxInterface
             $this->logToFile($e->getMessage());
             return false;
         }
+
     }
 
     public function logToFile(string $message)
     {
         file_put_contents('./logs/BankTransfer.txt', $message);
+    }
+
+    /**
+     * @return array[
+     *  'controller' => string,
+     *  'action' => string
+     * ]
+     */
+    public function returnArray(): array
+    {
+        return [
+                'controller' => 'xd',
+                'action' => 'action'
+        ];
     }
 }

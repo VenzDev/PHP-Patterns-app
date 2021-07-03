@@ -10,7 +10,13 @@ class Product extends BaseModel
     protected string $size;
     protected bool $isGarage;
     protected int $floors;
+    /**
+     * @foreign
+     */
     protected int $paymentId;
+    /**
+     * @foreign
+     */
     protected int $userId;
 
     /**
