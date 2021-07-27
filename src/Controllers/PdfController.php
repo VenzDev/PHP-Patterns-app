@@ -7,6 +7,7 @@ use App\Repository\PaymentRepository;
 use App\Repository\ProductRepository;
 use App\Request;
 use App\Response;
+use Exception;
 
 class PdfController extends AbstractController
 {
@@ -22,23 +23,27 @@ class PdfController extends AbstractController
 
     public function downloadPdfAction()
     {
-        $productId = $this->request->getParam('productId');
-        if(!$productId) {
-            Response::json('error',null,'invalid product id',400);
-        }
-
-        $product = $this->productRepository->getProductById($productId);
-        if(!$product) {
-            Response::json('error',null,'Product not found',400);
-        }
-
-        $payment = $this->paymentRepository->getPaymentById($product['paymentId']);
-        if(!$payment) {
-            Response::json('error',null,'Payment not found',400);
-        }
-
         $pdf = new PdfFacade();
-        $pdf->downloadPdf($product, $payment);
 
+        try {
+            $productId = $this->request->getParam('productId');
+            if(!$productId) {
+                throw new Exception('Invalid product Id');
+            }
+
+            $product = $this->productRepository->getProductById($productId);
+            if(!$product) {
+                throw new Exception('Product not found');
+            }
+
+            $payment = $this->paymentRepository->getPaymentByProductId($productId);
+            if(!$payment) {
+                throw new Exception('Payment not found');
+            }
+
+            $pdf->downloadPdf($product, $payment);
+        }catch(Exception $e) {
+            Response::json('error',null,$e->getMessage(),400);
+        }
     }
 }

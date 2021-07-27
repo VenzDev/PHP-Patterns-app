@@ -133,7 +133,6 @@ class QueryBuilder
     public function insert(string $table, array $fields)
     {
         $this->reset();
-
         $sql = "INSERT INTO $table (";
         foreach ($fields as $key => $field){
             $sql.= " $key,";

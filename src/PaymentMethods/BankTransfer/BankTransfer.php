@@ -13,6 +13,8 @@ use Exception;
 
 class BankTransfer implements PayInterface, TaxInterface
 {
+    public const TYPE = 'BankTransfer';
+
     private array $data;
     private float $tax = 0.16;
 
@@ -40,6 +42,7 @@ class BankTransfer implements PayInterface, TaxInterface
             $payment->setType($this->data['method']);
             $payment->setAmount($this->data['amount']);
             $payment->setTax($this->calculateTax($this->data['amount']));
+            $payment->setProductId($productId);
             $res = $payment->save();
 
             if(!$res) {

@@ -13,10 +13,6 @@ class Product extends BaseModel
     /**
      * @foreign
      */
-    protected int $paymentId;
-    /**
-     * @foreign
-     */
     protected int $userId;
 
     /**

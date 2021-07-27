@@ -22,10 +22,10 @@ class UserController extends AbstractController
         $data     = $this->request->json();
         $email    = $data['email'];
         $password = $data['password'];
-
-        $status = $this->userRepository->tryLogin($email, $password);
-        if($status) {
-            Response::json('success', 'success', 'Login success');
+        $result = $this->userRepository->tryLogin($email, $password);
+        if($result) {
+            unset($result['password']);
+            Response::json('success', $result, 'Login success');
         }
         Response::json('error', null, 'Invalid Credentials', 400);
     }

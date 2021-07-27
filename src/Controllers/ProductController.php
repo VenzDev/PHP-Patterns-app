@@ -10,6 +10,7 @@ use App\Repository\ProductRepository;
 use App\Request;
 use App\Response;
 use JetBrains\PhpStorm\Pure;
+use Exception;
 
 class ProductController extends AbstractController
 {
@@ -34,31 +35,37 @@ class ProductController extends AbstractController
 
     public function buyProductAction()
     {
-        $data      = $this->request->json();
-        $productId = $this->productRepository->createProduct($data['product'], $data['userId']);
+        try {
+            $data      = $this->request->json();
+            $productId = $this->productRepository->createProduct($data['product'], $data['userId']);
 
-        if (!$productId) {
-            Response::json('error', null, 'Invalid credentials', 400);
-        }
-        $payMethod = $this->getPaymentMethod($data['payment']);
-        $result    = $payMethod->pay($productId);
+            if (!$productId) {
+                throw new Exception('Product not found');
+            }
+            $payMethod = $this->getPaymentMethod($data['payment']);
+            $result    = $payMethod->pay($productId);
 
-        if (!$result) {
-            Response::json('error', null, 'Invalid credentials', 400);
+            if (!$result) {
+                throw new Exception('Invalid payment credentials.');
+            }
+            Response::json('success', $productId, 'success');
+        } catch (Exception $e) {
+            Response::json('error', null, $e->getMessage(), 400);
         }
-        Response::json('success', null, 'success');
     }
 
     private function getPaymentMethod($data)
     {
         $type = $data['method'];
         switch ($type) {
-            case 'BankTransfer':
+            case BankTransfer::TYPE:
                 return new BankTransfer($data);
-            case 'Blik':
+            case Blik::TYPE:
                 return new Blik($data);
-            case 'CardConnect':
+            case CardConnect::TYPE:
                 return new CardConnect($data);
+            default:
+                throw new Exception('Payment method not found');
         }
     }
 }

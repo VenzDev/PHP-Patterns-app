@@ -4,22 +4,27 @@ namespace App\Repository;
 
 use App\Models\Person;
 use App\Services\PasswordService;
+use Exception;
 
 class UserRepository
 {
-    public function tryLogin($email, $password): bool
+    public function tryLogin($email, $password): array|bool
     {
-        $password = PasswordService::encrypt($password);
+        try {
+            $password = PasswordService::encrypt($password);
+            $result   = Person::query()
+                    ->select('Persons')
+                    ->where('email', $email)
+                    ->where('password', $password)
+                    ->first();
 
-        $result = Person::query()->select('Persons')
-                ->where('email', $email)
-                ->where('password', $password)
-                ->first();
-
-        if ($result) {
-            return true;
+            if ($result) {
+                return $result;
+            }
+            return false;
+        } catch (Exception $e) {
+            return false;
         }
-        return false;
     }
 
     public function register($data)

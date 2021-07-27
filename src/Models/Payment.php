@@ -7,7 +7,10 @@ class Payment extends BaseModel
     protected string $type;
     protected float $tax;
     protected float $amount;
-
+    /**
+     * @foreign
+     */
+    protected int $productId;
 
     public function setType(string $type)
     {
@@ -37,6 +40,16 @@ class Payment extends BaseModel
     public function getAmount(): float
     {
         return $this->amount;
+    }
+
+    public function setProductId(int $productId)
+    {
+        $this->productId = $productId;
+    }
+
+    public function getProductId()
+    {
+        return $this->productId;
     }
 
 }

@@ -14,6 +14,8 @@ use Exception;
 
 class CardConnect implements PayInterface, TaxInterface
 {
+    public const TYPE = 'CardConnect';
+
     private array $data;
     private CardConnectService $service;
     private float $tax = 0.16;

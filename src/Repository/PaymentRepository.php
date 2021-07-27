@@ -15,4 +15,9 @@ class PaymentRepository
     {
         return Payment::query()->select('Payments')->where('id',$id)->first();
     }
+
+    public function getPaymentByProductId($productId)
+    {
+        return Payment::query()->select('Payments')->where('productId', $productId)->first();
+    }
 }

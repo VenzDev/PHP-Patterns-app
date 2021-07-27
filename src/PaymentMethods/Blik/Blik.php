@@ -15,6 +15,8 @@ use Exception;
 class Blik  implements PayInterface, TaxInterface
 {
 
+    public const TYPE = 'Blik';
+
     private array $product;
     private array $payment;
     private float $tax = 0.02;

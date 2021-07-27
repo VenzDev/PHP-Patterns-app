@@ -9,7 +9,6 @@ abstract class BaseModel
 {
     public function save()
     {
-
         $queryBuilder = new QueryBuilder();
         $tableName    = $this->getTableName();
         $tableColumns = get_object_vars($this);
